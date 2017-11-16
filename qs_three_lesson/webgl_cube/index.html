@@ -5,8 +5,100 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Three.js 立方体</title>
+  <script src="http://cdn.bootcss.com/three.js/r56/three.min.js "></script>
+  
 </head>
 <body>
-  
+  <canvas id="webglcanvas" width="500" height="500"
+  style="background-color:#000;margin:0 auto;display:block;"></canvas>
+  <script>
+    //3D电影
+    // 主体对象
+    let camera = null;
+    //场景
+    let scene = null;
+    //渲染器
+    let renderer = null;
+    let canvas = document.getElementById('webglcanvas'); //容器
+    //THREE是框架
+    renderer = new THREE.WebGLRenderer({
+      canvas:canvas,
+      antialias:true
+    });
+    renderer.setSize(canvas.width,canvas.height);
+    //场景
+    scene = new THREE.Scene();
+    //PerspectiveCamera是透视相机
+    //角度，宽高比,最近距离，最远距离
+    camera = new THREE.PerspectiveCamera(45,
+    canvas.width/canvas.height,1,400);
+    scene.add(camera);//添加相机
+    // 3D世界的基础 camera scene renderer
+    //立方体
+    //数学形状
+    // 球体 贴上纹理，形成地球
+    // 数学形状，立方体
+    let geometry = new THREE.CubeGeometry(2,2,2);
+    //添加纹理
+    let mapUrl = 'webgl-logo-256.jpg';
+    let map = THREE.ImageUtils.loadTexture(mapUrl);//映射
+    let material = new THREE.MeshBasicMaterial({
+      map:map
+    })
+    let cube = new THREE.Mesh(geometry,material);
+    cube.position.z = -8;
+    cube.rotation.x = Math.PI/5;
+    cube.rotation.y = Math.PI/5;
+    scene.add(cube);
+    run();
+    function run (){
+      //请求运动帧
+      requestAnimationFrame(function(){
+        run();
+      })
+      renderer.render(scene,camera);
+      animate();
+          
+              }
+          
+           var canvas = document.getElementById("webglcanvas");
+           renderer = new THREE.WebGLRenderer( { canvas: canvas, antialias: true } );
+           renderer.setSize(canvas.width, canvas.height);
+           scene = new THREE.Scene();
+           camera = new THREE.PerspectiveCamera( 45, canvas.width / canvas.height, 1, 4000 );
+          scene.add(camera);
+          // Add a directional light to show off the object
+          var light = new THREE.DirectionalLight( 0x0ffcff, 1.5);
+          // Position the light out from the scene, pointing at the origin
+                  light.position.set(0, 0, 1);
+                  scene.add( light );
+          
+                      // Create a shaded, texture-mapped cube and add it to the scene
+                      // First, create the texture map
+                      var mapUrl = "./webgl-logo-256.jpg";
+                      var map = THREE.ImageUtils.loadTexture(mapUrl);
+          
+                      // Now, create a Phong material to show shading; pass in the map
+                      var material = new THREE.MeshPhongMaterial({ map: map,
+                        color: 0x00ff00 });
+          
+                      // Create the cube geometry
+                      var geometry = new THREE.CubeGeometry(2, 2, 2);
+          
+                      // And put the geometry and material together into a mesh
+                      cube = new THREE.Mesh(geometry, material);
+          
+                      // Move the mesh back from the camera and tilt it toward the viewer
+                      cube.position.z = -8;
+                      cube.rotation.x = Math.PI / 5;
+                      cube.rotation.y = Math.PI / 5;
+          
+                      // Finally, add the mesh to our scene
+                      scene.add( cube );
+          
+                      // Run the run loop
+                      run();
+
+  </script>
 </body>
 </html>
